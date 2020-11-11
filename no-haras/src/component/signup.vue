@@ -4,21 +4,21 @@
 <h3>Registeration</h3>
 <form>
     <div>
-    <label>Helper:  </label><input type='radio' v-model='user.helper' v-bind:value=true>
-    <label>Need Help:  </label><input type='radio' v-model='user.helper' v-bind:value=false>
+    <label>Helper:  </label> <input type='radio' v-model='user.helper' v-bind:value=true>
+    <label>Need Help:  </label> <input type='radio' v-model='user.helper' v-bind:value=false>
     </div>
-    <label>First Name:</label><input type='text' v-model=user.Fname><br>
-    <label>Last Name:</label><input type='text' v-model=user.Lname><br>
-    <label>Address:</label><input type='text' v-model=user.address placeholder="Addis Ababa,Yeka"><br>
-    <label>User Name:</label><input type='text' v-model=user.username><br>
-    <label>Password</label><input type='password' v-model=user.password><br>
-    <label>ReEnter Password:</label><input type='password' v-model=reentered_pass><br>
+    <label>First Name: </label><input type='text' v-model=user.Fname><br>
+    <label>Last Name: </label><input type='text' v-model=user.Lname><br>
+    <label>Address: </label><input type='text' v-model=user.address placeholder="Addis Ababa,Yeka"><br>
+    <label>User Name: </label><input type='text' v-model=user.username><br>
+    <label>Password: </label><input type='password' v-model=user.password><br>
+    <label>ReEnter Password: </label><input type='password' v-model=reentered_pass><br>
     
     <div v-show='user.helper==true'>
-    <label>Education_status:</label><input type='text' v-model=user.education_status>
+    <label>Education_status: </label><input type='text' v-model=user.education_status>
      <div>
         <label>Gender: </label>
-    <label>Male:</label><input type='radio' v-model='user.gender' value='male'>
+    <label>Male: </label><input type='radio' v-model='user.gender' value='male'>
     <label>Female:</label><input type='radio' v-model='user.gender' value="female">
     </div>
     <label></label>
@@ -27,11 +27,21 @@
         <textarea placeholder="what type of need you wants?like psycho,economic or other "></textarea>
          <div>
         <label>Gender: </label>
-    <label>Male:</label><input type='radio' v-model='user.gender' value='male'>
+    <label>Male:</label><input type='radio' v-model='user.gender' value='male' default>
     <label>Female:</label><input type='radio' v-model='user.gender' value='female'>
     </div>
     </div>
     <button v-on:click.prevent='register'>Register</button>
+    <div v-show=!fill style="color:red">
+        Please Fill all Fields 
+    </div>
+    <div v-show=registered style="color:green">
+        Registered Succesfully,
+        <p>Use your UserName and Password to signin</p> 
+    </div>
+      <div v-show=!pass style="color:red">
+        Your Re-Entered password don't match 
+    </div>
 </form>
 </div>
 </template>
@@ -46,25 +56,37 @@ export default{
                 username:'',
                 password:'',
                 address:'',
-                gender:'',
+                gender:'male',
                 helper:true,
                 education_status:'',
 
 
             },
-            reentered_pass:''
+            reentered_pass:'',
+            fill:true,
+            registered:false,
+            pass:true
 
     }
     },
     methods:{
         register:function(){
-            if(this.reentered_pass==this.user.password){
-                console.log(this.user)
-            }
+            if(this.user.Fname!='' && this.user.Lname!='' && this.user.username!='' &&
+             this.user.password && this.user.address!='' && this.user.education_status!='' && 
+             this.user.reentered_pass!=''){
+                 if(this.user.password==this.reentered_pass){
+            this.$http.post('https://no-bully-1b47c.firebaseio.com/register.json',this.user).then(function(data){
+               this.registered=true;
+            });}
             else{
-                console.log("reenter password correctly");
+                this.pass=false
             }
+        }
+        else{
+            this.fill=false
 
+        }
+        
         }
     },
     components:{
