@@ -16,20 +16,18 @@
     
     <div v-show='user.helper==true'>
     <label>Education_status: </label><input type='text' v-model=user.education_status>
-     <div>
+    
+    </div>
+  <div>
         <label>Gender: </label>
     <label>Male: </label><input type='radio' v-model='user.gender' value='male'>
     <label>Female:</label><input type='radio' v-model='user.gender' value="female">
     </div>
-    <label></label>
-    </div>
-    <div v-show='user.helper==false'>
-        <textarea placeholder="what type of need you wants?like psycho,economic or other "></textarea>
-         <div>
-        <label>Gender: </label>
-    <label>Male:</label><input type='radio' v-model='user.gender' value='male' default>
-    <label>Female:</label><input type='radio' v-model='user.gender' value='female'>
-    </div>
+    <div>
+        <label>Support Type:</label>
+        <select v-model='user.support'>
+            <option v-for='type in helptype' v-bind:key='type'>{{type}}</option>
+        </select>
     </div>
     <button v-on:click.prevent='register'>Register</button>
     <div v-show=!fill style="color:red">
@@ -59,9 +57,12 @@ export default{
                 gender:'male',
                 helper:true,
                 education_status:'',
+                support:'Psychology Support'
+                
 
 
             },
+            helptype:['Psychology Support','Economical Support','Tutorial Support','Spiritual Support'],
             reentered_pass:'',
             fill:true,
             registered:false,
