@@ -2,8 +2,8 @@
 <div id='login'>
 <app-head-link></app-head-link>
 <form class='submission-form'>
-<label>User Name:</label><input type='text' v-model=login.username><br>
-<label>Password</label><input type='password' v-model=login.password><br>
+<label>User Name:</label><input type='text' ref=username><br>
+<label>Password</label><input type='password' ref=password><br>
 <button v-on:click.prevent='submit'>Login</button>
 <div>
 <label v-show="right=='wrong'" style="color:#eee"> Username Or Password Error</label>
@@ -17,10 +17,6 @@ import Heading from './links.vue'
 export default{
     data(){
         return{
-            login:{
-                username:'',
-                password:'',
-            },
             user:[],
             right:''
 
@@ -34,8 +30,8 @@ export default{
             }).then(function(data){
                 for(let key in data){
                     this.user.push(data[key].username)
-                  if(this.user.includes(this.login.username)){
-                     if(data[key].password==this.login.password){
+                  if(this.user.includes(this.$refs.username.value)){
+                     if(data[key].password==this.$refs.password.value){
                          this.right="right"
                      }
                      else{
